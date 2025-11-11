@@ -1,0 +1,148 @@
+@font-face {
+  font-family: 'MyFont'; 
+  src: url('fonts/FrostScream.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'BodyFont'; 
+  src: url('fonts/HollowThriller-Oblique.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+body {
+    background-color: #023e8a;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+.main {
+    position: relative;
+    background-image: url("homeimage.jpg");
+    color: #fff;
+    width: 35%;
+    background-size: cover;
+    background-position: center;
+    margin: 2rem auto;
+    border: 0.3rem solid #fff;
+    border-radius: 1rem;
+    text-align: center;
+}
+.main::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #023e8a(0, 0, 0, 0);
+  z-index: 0;
+}
+.main * {
+  position: relative;
+  z-index: 3;
+}
+.nav {
+    display: flex;
+    justify-content: space-between;
+}
+.logo {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.2rem 0rem 1rem 0rem;
+}
+.navigation {
+    display: flex;
+    list-style: none;
+}
+a {
+    color: #fff;
+    margin: 1rem 0.5rem;
+    text-transform: capitalize;
+    text-decoration: underline;
+}
+
+.head-text {
+    text-transform: uppercase;
+    font-size: 5rem;
+    text-shadow: 0 0  2rem #023e8a;
+    font-family: 'MyFont';
+    line-height: 6rem;
+}
+.body-text {
+    text-transform: uppercase;
+    margin: 5rem auto;
+    font-size: 1.5rem;
+    text-shadow: 0 0  2rem #023e8a;
+    font-family: 'BodyFont';
+}
+.foot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content-text {
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    color: #03045e;
+    text-shadow: 0 0rem 7rem #fff;
+}
+h2 {
+    text-transform: uppercase;
+    font-size: 2.5rem;
+    color: #03045e;
+    text-shadow: 2px 2px 4px #023e8a(0,0,0,0.5);
+    font-family: 'MyFont';
+}
+.story {
+    background-color: #fff;
+    color: #03045e;
+    padding: 1.3rem;
+    margin: 1rem 5rem;
+    display: flex;
+    flex-direction: column;
+}
+.btn-story {
+    background-color: transparent;
+    color: #03045e;
+    border: none;
+    align-self: flex-end;
+}
+.date,.story-title,.content-story {
+    align-self: flex-start;
+    margin: 0.3rem;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 3rem;
+}
+label {
+    align-self: flex-start;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+input,textarea {
+    padding: 1rem;
+    margin: 0.5rem 0rem;
+    border-radius: 0.3rem;
+}
+.btn-add {
+    font-family: 'MyFont';
+    align-self: center;
+    margin: 1rem;
+    padding: 0.5rem;
+    font-size: 2rem;
+    color: #fff;
+    border-radius: 0.3rem;
+    background-color: transparent;
+    border: 0.13rem solid #fff;
+    width: 100%;
+}
+.btn-add:hover {
+    background-color: #fff;
+    color: #03045e;
+}

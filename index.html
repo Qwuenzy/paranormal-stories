@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>ShareYourHorror</title>
+  </head>
+  <body>
+    <div class="main">
+      <!-- nav bar -->
+      <div class="nav">
+        <img src="logo.jpg" alt="logo-image" class="logo" />
+        <ul class="navigation">
+          <li class="nav-item"><a href="">home</a></li>
+          <li class="nav-item"><a href="">read</a></li>
+          <li class="nav-item"><a href="">upload</a></li>
+        </ul>
+      </div>
+      <!-- home page -->
+      <div class="body">
+        <h1 class="head-text">From the other side</h1>
+        <h3 class="body-text">the online home of paranormal sightings</h3>
+      </div>
+      <!-- sightings page -->
+      <div class="content">
+        <h2>sightings</h2>
+        <div class="story">
+          <p class="date">2025 14th jan at 11:30 newyork USA</p>
+          <h3 class="story-title">the dream</h3>
+          <p class="content-story">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam
+            ipsa doloribus iste? Voluptate dolore fuga iste provident, vitae
+            odio recusandae maxime aperiam ipsum quaerat rerum quisquam! Sint,
+            dolorum. Odit, voluptates.
+          </p>
+          <button class="btn-story">Read in full</button>
+        </div>
+      </div>
+      <!-- add sightings page -->
+      <div class="add-sighting">
+        <h2>Add sightings</h2>
+        <form method="post">
+          <label for="title">Title</label>
+          <input type="text" id="title" placeholder="A ghostly encounter" />
+          <label for="Time/Date">Time/Date</label>
+          <input
+            type="datetime-local"
+            id="Time/Date"
+            placeholder="A ghostly encounter"
+          />
+          <label for="location">location</label>
+          <input type="text" id="location" placeholder="A ghostly encounter" />
+          <label for="details">details</label>
+          <textarea
+            name="details"
+            rows="5"
+            id="details"
+            placeholder="I was about dozing off when..."
+          ></textarea>
+          <button class="btn-add">Submit</button>
+        </form>
+      </div>
+      <footer class="foot">
+        <p>© 2025 from the other side. All rights preserved</p>
+      </footer>
+    </div>
+    <script src="index.js" type="module"></script>
+  </body>
+</html>
