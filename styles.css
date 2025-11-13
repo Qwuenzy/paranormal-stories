@@ -20,15 +20,20 @@ body {
 }
 .main {
     position: relative;
-    background-image: url("homeimage.jpg");
+    background-image: url("images/homeimage.jpg");
     color: #fff;
-    width: 35%;
+    width: 50%;
     background-size: cover;
     background-position: center;
     margin: 2rem auto;
     border: 0.3rem solid #fff;
     border-radius: 1rem;
     text-align: center;
+}
+@media (min-width: 1024px) and (max-width: 1600px){
+     .main {
+        width: 35%;
+     }
 }
 .main::before {
   content: "";
@@ -96,6 +101,12 @@ h2 {
     text-shadow: 2px 2px 4px #023e8a(0,0,0,0.5);
     font-family: 'MyFont';
 }
+.story-containers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .story {
     background-color: #fff;
     color: #03045e;
@@ -103,11 +114,18 @@ h2 {
     margin: 1rem 5rem;
     display: flex;
     flex-direction: column;
+    width: 50%;
 }
 .btn-story {
     background-color: transparent;
     color: #03045e;
     border: none;
+    align-self: flex-end;
+}
+.del-content{
+    background-color: transparent;
+    color: #03045e;
+    border: 0.2rem solid #03045e;
     align-self: flex-end;
 }
 .date,.story-title,.content-story {
