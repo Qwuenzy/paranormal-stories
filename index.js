@@ -6,7 +6,13 @@ const addsights = document.querySelector(".add-sighting");
 const homeP = document.querySelector(".homebody");
 const info = document.getElementsByTagName("input");
 const form = document.querySelector("form");
+const storyContainers = document.querySelector(".story-containers");
 
+function short20(content) {
+  const words = content.split(" ");
+  if (words.length <= 20) return content;
+  return words.slice(0, 20).join(" ") + "...";
+}
 
 function homePage() {
   sights.style.display = "none";
@@ -20,6 +26,8 @@ read.addEventListener("click", () => {
   homeP.style.display = "none";
   addsights.style.display = "none";
   sights.style.display = "block";
+ 
+  storyContainers.querySelectorAll(".btn-del").forEach(btn => btn.style.display = "none");
 });
 
 upload.addEventListener("click", () => {
@@ -27,12 +35,6 @@ upload.addEventListener("click", () => {
   sights.style.display = "none";
   addsights.style.display = "block";
 });
-
-function short20(content) {
-  const words = content.split(" ");
-  if (words.length <= 15) return content;
-  return words.slice(0, 20).join(" ") + "...";
-}
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -43,98 +45,56 @@ form.addEventListener("submit", (e) => {
   const details = document.getElementById("details");
   const content = details.value;
 
-  stories.innerHTML += `<div class="story">
+  stories.innerHTML += `<div class="story" data-full-content="${content}">
           <p class="date">${timeDate.value} ${location.value}</p>
           <h3 class="story-title">${title.value}</h3>
           <p class="content-story">
             ${short20(content)}
           </p>
-           <button class="btn-story">Read in full</button>
+           <div class="btns"><button class="btn-story">Read in full</button>
+           <img src="images/trash.png" class="btn-del" style="display: none;"></div>
            </div>`;
   form.reset();
-  localStorage.setItem("sightings", stories.innerHTML)
+   alert("story uploaded!");
+  localStorage.setItem("sightings", stories.innerHTML);
 });
 
 window.addEventListener("load", () => {
-  const stories = document.querySelector(".story-containers")
-  const saved = localStorage.getItem("sightings")
+  const stories = document.querySelector(".story-containers");
+  const saved = localStorage.getItem("sightings");
   if (saved) {
-    stories.innerHTML = saved
+    stories.innerHTML = saved;
   }
-})
-const stories = document.querySelector(".story-containers")
 
-stories.addEventListener("click", (e) => {
-
-  if (e.target.classList.contains("btn-story")) {
-    const storyDiv = e.target.closest(".story")
-
-    const fullText = storyDiv.dataset.fulltext
-    const contentPara = storyDiv.querySelector(".content-story")
-
-    if (e.target.textContent === "Read in full") {
-      contentPara.textContent = fullText
-      e.target.textContent = "Show less"
-    } else {
-      contentPara.textContent = fullText.split(" ").slice(0,20).join(" ") + "..."
-      e.target.textContent = "Read in full"
+  const allStories = stories.querySelectorAll(".story");
+  allStories.forEach(story => {
+    const contentP = story.querySelector(".content-story");
+    if (!story.dataset.fullContent) {
+      story.dataset.fullContent = contentP.textContent;
     }
+  });
+});
+
+storyContainers.addEventListener("click", (e) => {
+  const target = e.target;
+  const story = target.closest(".story");
+  if (!story) return;
+
+  if (target.classList.contains("btn-story")) {
+    const contentP = story.querySelector(".content-story");
+    const fullContent = story.dataset.fullContent;
+    const delBtn = story.querySelector(".btn-del");
+    if (contentP.textContent.includes("...")) {
+      contentP.textContent = fullContent;
+      target.textContent = "Read less";
+      if (delBtn) delBtn.style.display = "block";
+    } else {
+      contentP.textContent = short20(fullContent);
+      target.textContent = "Read in full";
+      if (delBtn) delBtn.style.display = "none";
+    }
+  } else if (target.classList.contains("btn-del")) {
+    story.remove();
+    localStorage.setItem("sightings", storyContainers.innerHTML);
   }
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});

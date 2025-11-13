@@ -116,17 +116,20 @@ h2 {
     flex-direction: column;
     width: 50%;
 }
+.btns {
+    align-self: flex-end;
+    display: flex;
+}
 .btn-story {
     background-color: transparent;
     color: #03045e;
     border: none;
-    align-self: flex-end;
 }
-.del-content{
-    background-color: transparent;
+.btn-del {
     color: #03045e;
-    border: 0.2rem solid #03045e;
-    align-self: flex-end;
+    border: 0.2rem solid #03045e; 
+    width: 1.5rem;
+    height: 1.5rem;
 }
 .date,.story-title,.content-story {
     align-self: flex-start;
