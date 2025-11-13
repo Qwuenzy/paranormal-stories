@@ -36,17 +36,41 @@ upload.addEventListener("click", () => {
   addsights.style.display = "block";
 });
 
+function formatDateTime(inputValue) {
+  if (!inputValue) return ""
+  const date = new Date(inputValue)
+  const year = date.getFullYear()
+  const day = date.getDate()
+  const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+  const month = monthNames[date.getMonth()]
+
+  const hours = date.getHours().toString().padStart(2, "0")
+  const minutes = date.getMinutes().toString().padStart(2, "0")
+
+  const ordinal = (n) => {
+    if (n > 3 && n < 21) return "th"
+    switch (n % 10) {
+      case 1: return "st"
+      case 2: return "nd"
+      case 3: return "rd"
+      default: return "th"
+    }
+  }
+  return `${year} ${day}${ordinal(day)} ${month} at ${hours}:${minutes}`
+}
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const stories = document.querySelector(".story-containers");
   const title = document.getElementById("title");
-  const timeDate = document.getElementById("Time/Date");
+  const datetimeInput = document.getElementById("Time/Date")
   const location = document.getElementById("location");
   const details = document.getElementById("details");
   const content = details.value;
+  const formattedDate = formatDateTime(datetimeInput.value)
 
   stories.innerHTML += `<div class="story" data-full-content="${content}">
-          <p class="date">${timeDate.value} ${location.value}</p>
+          <p class="date">${formattedDate} ${location.value}</p>
           <h3 class="story-title">${title.value}</h3>
           <p class="content-story">
             ${short20(content)}
