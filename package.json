@@ -1,0 +1,24 @@
+{
+  "name": "paranormal-stories",
+  "version": "1.0.0",
+  "description": "a platform for sharing ghostly encounters",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Qwuenzy/paranormal-stories.git"
+  },
+  "author": "qwuenzy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Qwuenzy/paranormal-stories/issues"
+  },
+  "homepage": "https://github.com/Qwuenzy/paranormal-stories#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "http": "^0.0.1-security"
+  }
+}
