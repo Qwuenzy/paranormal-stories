@@ -26,8 +26,10 @@ read.addEventListener("click", () => {
   homeP.style.display = "none";
   addsights.style.display = "none";
   sights.style.display = "block";
- 
-  storyContainers.querySelectorAll(".btn-del").forEach(btn => btn.style.display = "none");
+
+  storyContainers
+    .querySelectorAll(".btn-del")
+    .forEach((btn) => (btn.style.display = "none"));
 });
 
 upload.addEventListener("click", () => {
@@ -37,37 +39,54 @@ upload.addEventListener("click", () => {
 });
 
 function formatDateTime(inputValue) {
-  if (!inputValue) return ""
-  const date = new Date(inputValue)
-  const year = date.getFullYear()
-  const day = date.getDate()
-  const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-  const month = monthNames[date.getMonth()]
+  if (!inputValue) return "";
+  const date = new Date(inputValue);
+  const year = date.getFullYear();
+  const day = date.getDate();
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const month = monthNames[date.getMonth()];
 
-  const hours = date.getHours().toString().padStart(2, "0")
-  const minutes = date.getMinutes().toString().padStart(2, "0")
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
 
   const ordinal = (n) => {
-    if (n > 3 && n < 21) return "th"
+    if (n > 3 && n < 21) return "th";
     switch (n % 10) {
-      case 1: return "st"
-      case 2: return "nd"
-      case 3: return "rd"
-      default: return "th"
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
     }
-  }
-  return `${year} ${day}${ordinal(day)} ${month} at ${hours}:${minutes}`
+  };
+  return `${year} ${day}${ordinal(day)} ${month} at ${hours}:${minutes}`;
 }
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const stories = document.querySelector(".story-containers");
   const title = document.getElementById("title");
-  const datetimeInput = document.getElementById("Time/Date")
+  const datetimeInput = document.getElementById("Time/Date");
   const location = document.getElementById("location");
   const details = document.getElementById("details");
   const content = details.value;
-  const formattedDate = formatDateTime(datetimeInput.value)
+  const formattedDate = formatDateTime(datetimeInput.value);
 
   stories.innerHTML += `<div class="story" data-full-content="${content}">
           <p class="date">${formattedDate} ${location.value}</p>
@@ -79,7 +98,7 @@ form.addEventListener("submit", (e) => {
            <img src="images/trash.png" class="btn-del" style="display: none;"></div>
            </div>`;
   form.reset();
-   alert("story uploaded!");
+  alert("story uploaded!");
   localStorage.setItem("sightings", stories.innerHTML);
 });
 
@@ -91,11 +110,20 @@ window.addEventListener("load", () => {
   }
 
   const allStories = stories.querySelectorAll(".story");
-  allStories.forEach(story => {
+  allStories.forEach((story) => {
     const contentP = story.querySelector(".content-story");
-    if (!story.dataset.fullContent) {
-      story.dataset.fullContent = contentP.textContent;
-    }
+
+    let fullContent = story.dataset.fullContent || contentP.textContent.trim();
+
+    story.dataset.fullContent = fullContent;
+
+    contentP.textContent = short20(fullContent);
+
+    const btn = story.querySelector(".btn-story");
+    if (btn) btn.textContent = "Read in full";
+
+    const delBtn = story.querySelector(".btn-del");
+    if (delBtn) delBtn.style.display = "none";
   });
 });
 
