@@ -6,7 +6,7 @@ const addsights = document.querySelector(".add-sighting");
 const homeP = document.querySelector(".homebody");
 const info = document.getElementsByTagName("input");
 const form = document.querySelector("form");
-const storyContainers = document.querySelector(".story-containers");
+const stories = document.querySelector(".story-containers");
 
 function short20(content) {
   const words = content.split(" ");
@@ -27,7 +27,7 @@ read.addEventListener("click", () => {
   addsights.style.display = "none";
   sights.style.display = "block";
 
-  storyContainers
+  stories
     .querySelectorAll(".btn-del")
     .forEach((btn) => (btn.style.display = "none"));
 });
@@ -78,56 +78,38 @@ function formatDateTime(inputValue) {
   return `${year} ${day}${ordinal(day)} ${month} at ${hours}:${minutes}`;
 }
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const stories = document.querySelector(".story-containers");
-  const title = document.getElementById("title");
-  const datetimeInput = document.getElementById("Time/Date");
-  const location = document.getElementById("location");
-  const details = document.getElementById("details");
-  const content = details.value;
-  const formattedDate = formatDateTime(datetimeInput.value);
+try{
+  const data = await fetch("/api")
+  const response = await data.json()
+  renderStories(response)
+} catch(err){
+  console.log(err);
 
-  stories.innerHTML += `<div class="story" data-full-content="${content}">
-          <p class="date">${formattedDate} ${location.value}</p>
-          <h3 class="story-title">${title.value}</h3>
+}
+// formatDateTime()
+function renderStories(storysData){
+    const stories = document.querySelector(".story-containers")
+    let storieshtml = ""
+
+    storysData.forEach((cards, id) => {
+      storieshtml += `<div class="story" data-full-content="${cards.details}" key="${id}">
+          <p class="date">${cards.datetimeinput} ${cards.location}</p>
+          <h3 class="story-title">${cards.title}</h3>
           <p class="content-story">
-            ${short20(content)}
+            ${short20(cards.details)}
           </p>
            <div class="btns"><button class="btn-story">Read in full</button>
            <img src="images/trash.png" class="btn-del" style="display: none;"></div>
            </div>`;
-  form.reset();
-  alert("story uploaded!");
-  localStorage.setItem("sightings", stories.innerHTML);
-});
+    })
+    stories.innerHTML = storieshtml
+}
+form.addEventListener("submit", (e) => {
+  e.preventDefault()
+  renderStories(storysData)
+})
 
-window.addEventListener("load", () => {
-  const stories = document.querySelector(".story-containers");
-  const saved = localStorage.getItem("sightings");
-  if (saved) {
-    stories.innerHTML = saved;
-  }
-
-  const allStories = stories.querySelectorAll(".story");
-  allStories.forEach((story) => {
-    const contentP = story.querySelector(".content-story");
-
-    let fullContent = story.dataset.fullContent || contentP.textContent.trim();
-
-    story.dataset.fullContent = fullContent;
-
-    contentP.textContent = short20(fullContent);
-
-    const btn = story.querySelector(".btn-story");
-    if (btn) btn.textContent = "Read in full";
-
-    const delBtn = story.querySelector(".btn-del");
-    if (delBtn) delBtn.style.display = "none";
-  });
-});
-
-storyContainers.addEventListener("click", (e) => {
+stories.addEventListener("click", (e) => {
   const target = e.target;
   const story = target.closest(".story");
   if (!story) return;
@@ -147,6 +129,6 @@ storyContainers.addEventListener("click", (e) => {
     }
   } else if (target.classList.contains("btn-del")) {
     story.remove();
-    localStorage.setItem("sightings", storyContainers.innerHTML);
+    renderStories(storysData)
   }
 });
