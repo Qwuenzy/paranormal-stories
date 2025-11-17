@@ -4,7 +4,7 @@ import getContentType from "./getContentType.js";
 import sendResponse from "./sendResponse.js";
 
 export default async function serveStatic(dirn,req,res) {
-    const pubdir = path.join(dirn, "public")
+  const pubdir = path.join(dirn, "public")
   const filepath = path.join(pubdir,
      req.url === "/" ? "index.html" : req.url);
   try {

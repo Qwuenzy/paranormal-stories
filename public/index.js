@@ -7,6 +7,7 @@ const homeP = document.querySelector(".homebody");
 const info = document.getElementsByTagName("input");
 const form = document.querySelector("form");
 const stories = document.querySelector(".story-containers");
+const formText = document.querySelector(".formtext")
 
 function short20(content) {
   const words = content.split(" ");
@@ -36,6 +37,62 @@ upload.addEventListener("click", () => {
   homeP.style.display = "none";
   sights.style.display = "none";
   addsights.style.display = "block";
+});
+
+let storysData = [];
+
+async function loadStories() {
+  try {
+    const data = await fetch("/api");
+    storysData = await data.json();
+    renderStories(storysData);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+loadStories();
+
+function renderStories(storysData){
+    const stories = document.querySelector(".story-containers")
+    let storieshtml = ""
+
+    storysData.forEach((cards, id) => {
+      storieshtml += `<div class="story" data-full-content="${cards.details}" key="${id}">
+          <p class="date">${cards.datetimeinput} ${cards.location}</p>
+          <h3 class="story-title">${cards.title}</h3>
+          <p class="content-story">
+            ${short20(cards.details)}
+          </p>
+           <div class="btns"><button class="btn-story">Read in full</button>
+           <img src="images/trash.png" class="btn-del" style="display: none;"></div>
+           </div>`;
+    })
+    stories.innerHTML = storieshtml
+}
+
+stories.addEventListener("click", (e) => {
+  const target = e.target;
+  const story = target.closest(".story");
+  if (!story) return;
+
+  if (target.classList.contains("btn-story")) {
+    const contentP = story.querySelector(".content-story");
+    const fullContent = story.dataset.fullContent;
+    const delBtn = story.querySelector(".btn-del");
+    if (contentP.textContent.includes("...")) {
+      contentP.textContent = fullContent;
+      target.textContent = "Read less";
+      if (delBtn) delBtn.style.display = "block";
+    } else {
+      contentP.textContent = short20(fullContent);
+      target.textContent = "Read in full";
+      if (delBtn) delBtn.style.display = "none";
+    }
+  } else if (target.classList.contains("btn-del")) {
+    story.remove();
+    renderStories(storysData)
+  }
 });
 
 function formatDateTime(inputValue) {
@@ -78,57 +135,32 @@ function formatDateTime(inputValue) {
   return `${year} ${day}${ordinal(day)} ${month} at ${hours}:${minutes}`;
 }
 
-try{
-  const data = await fetch("/api")
-  const response = await data.json()
-  renderStories(response)
-} catch(err){
-  console.log(err);
-
-}
-// formatDateTime()
-function renderStories(storysData){
-    const stories = document.querySelector(".story-containers")
-    let storieshtml = ""
-
-    storysData.forEach((cards, id) => {
-      storieshtml += `<div class="story" data-full-content="${cards.details}" key="${id}">
-          <p class="date">${cards.datetimeinput} ${cards.location}</p>
-          <h3 class="story-title">${cards.title}</h3>
-          <p class="content-story">
-            ${short20(cards.details)}
-          </p>
-           <div class="btns"><button class="btn-story">Read in full</button>
-           <img src="images/trash.png" class="btn-del" style="display: none;"></div>
-           </div>`;
-    })
-    stories.innerHTML = storieshtml
-}
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault()
-  renderStories(storysData)
+  const formData = {
+  location: document.getElementById('location').value,
+  datetimeinput: formatDateTime(document.getElementById('Time/Date').value),
+  details: document.getElementById('details').value,
+  title: document.getElementById('title').value
+}
+
+try {
+  const response = await fetch ("/api", {
+    method: "POST",
+    headers: {"Content-Type" : "application/json"},
+    body: JSON.stringify(formData)
+  })
+  if (response.ok){
+    formText.innerHTML = "Your Sighting was uploaded"
+    form.reset()
+    loadStories(); // Reload stories after successful upload
+  } else {
+    formText.innerHTML = "There was an error uploading your sighting... try again later!"
+  }
+} catch(err) {
+  console.log("Error:", err);
+
+}
 })
 
-stories.addEventListener("click", (e) => {
-  const target = e.target;
-  const story = target.closest(".story");
-  if (!story) return;
 
-  if (target.classList.contains("btn-story")) {
-    const contentP = story.querySelector(".content-story");
-    const fullContent = story.dataset.fullContent;
-    const delBtn = story.querySelector(".btn-del");
-    if (contentP.textContent.includes("...")) {
-      contentP.textContent = fullContent;
-      target.textContent = "Read less";
-      if (delBtn) delBtn.style.display = "block";
-    } else {
-      contentP.textContent = short20(fullContent);
-      target.textContent = "Read in full";
-      if (delBtn) delBtn.style.display = "none";
-    }
-  } else if (target.classList.contains("btn-del")) {
-    story.remove();
-    renderStories(storysData)
-  }
-});
