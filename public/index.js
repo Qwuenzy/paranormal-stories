@@ -7,7 +7,8 @@ const homeP = document.querySelector(".homebody");
 const info = document.getElementsByTagName("input");
 const form = document.querySelector("form");
 const stories = document.querySelector(".story-containers");
-const formText = document.querySelector(".formtext")
+const formText = document.querySelector(".formtext");
+const submit = document.querySelector(".btn-add")
 
 function short20(content) {
   const words = content.split(" ");
@@ -53,22 +54,24 @@ async function loadStories() {
 
 loadStories();
 
-function renderStories(storysData){
-    const stories = document.querySelector(".story-containers")
-    let storieshtml = ""
+function renderStories(storysData) {
+  const stories = document.querySelector(".story-containers");
+  let storieshtml = "";
 
-    storysData.forEach((cards, id) => {
-      storieshtml += `<div class="story" data-full-content="${cards.details}" key="${id}">
-          <p class="date">${cards.datetimeinput} ${cards.location}</p>
-          <h3 class="story-title">${cards.title}</h3>
+  storysData.forEach((cards, id) => {
+    storieshtml += `<div class="story" data-full-content="${
+      cards.Details
+    }" key="${id}">
+          <p class="date">${cards.dateTime} ${cards.Location}</p>
+          <h3 class="story-title">${cards.Title}</h3>
           <p class="content-story">
-            ${short20(cards.details)}
+            ${short20(cards.Details)}
           </p>
            <div class="btns"><button class="btn-story">Read in full</button>
            <img src="images/trash.png" class="btn-del" style="display: none;"></div>
            </div>`;
-    })
-    stories.innerHTML = storieshtml
+  });
+  stories.innerHTML = storieshtml;
 }
 
 stories.addEventListener("click", (e) => {
@@ -91,7 +94,7 @@ stories.addEventListener("click", (e) => {
     }
   } else if (target.classList.contains("btn-del")) {
     story.remove();
-    renderStories(storysData)
+    renderStories(storysData);
   }
 });
 
@@ -136,31 +139,34 @@ function formatDateTime(inputValue) {
 }
 
 form.addEventListener("submit", async (e) => {
-  e.preventDefault()
+  e.preventDefault();
   const formData = {
-  location: document.getElementById('location').value,
-  datetimeinput: formatDateTime(document.getElementById('Time/Date').value),
-  details: document.getElementById('details').value,
-  title: document.getElementById('title').value
-}
+    Location: document.getElementById("location").value,
+    dateTime: formatDateTime(document.getElementById("Time/Date").value),
+    Details: document.getElementById("details").value,
+    Title: document.getElementById("title").value,
+  };
 
-try {
-  const response = await fetch ("/api", {
-    method: "POST",
-    headers: {"Content-Type" : "application/json"},
-    body: JSON.stringify(formData)
-  })
-  if (response.ok){
-    formText.innerHTML = "Your Sighting was uploaded"
-    form.reset()
-    loadStories(); // Reload stories after successful upload
-  } else {
-    formText.innerHTML = "There was an error uploading your sighting... try again later!"
+  if (!formData.Title || !formData.Location || !formData.Details || !formData.dateTime) {
+    alert("Please fill in all fields before submitting.");
+    return;
   }
-} catch(err) {
-  console.log("Error:", err);
 
-}
-})
-
-
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    if (response.ok) {
+      formText.innerHTML = "Your Sighting was uploaded";
+      form.reset();
+      loadStories();
+    } else {
+      formText.innerHTML =
+        "There was an error uploading your sighting... try again later!";
+    }
+  } catch (err) {
+    console.log("Error:", err);
+  }
+});
