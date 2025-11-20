@@ -4,11 +4,10 @@ const upload = document.querySelector(".nav-itemU");
 const sights = document.querySelector(".sightscontent");
 const addsights = document.querySelector(".add-sighting");
 const homeP = document.querySelector(".homebody");
-const info = document.getElementsByTagName("input");
 const form = document.querySelector("form");
 const stories = document.querySelector(".story-containers");
 const formText = document.querySelector(".formtext");
-const submit = document.querySelector(".btn-add")
+
 
 function short20(content) {
   const words = content.split(" ");

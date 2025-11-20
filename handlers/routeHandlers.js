@@ -3,6 +3,7 @@ import sendResponse from "../utils/sendResponse.js";
 import ParseJsonBody from "../utils/ParseJsonBody.js";
 import addNewSightings from "../utils/addNewSightings.js";
 import sanitizeData from "../utils/sanitize.js";
+import sightLocation from "../events/sightingEvents.js"
 
 async function handleGet(res) {
   try {
@@ -20,6 +21,7 @@ async function handlePost(req, res) {
     if (
       !parsedbody.Title ||
       !parsedbody.Location ||
+      !parsedbody.Details ||
       !parsedbody.dateTime
     ) {
       sendResponse(
@@ -35,6 +37,7 @@ async function handlePost(req, res) {
     const sanitizeBody = sanitizeData(parsedbody);
     await addNewSightings(sanitizeBody);
     sendResponse(res, 201, "application/json", JSON.stringify(sanitizeBody));
+    await sightLocation(sanitizeBody)
   } catch (err) {
     sendResponse(res, 400, "application/json", JSON.stringify("Error:", err));
   }
