@@ -1,9 +1,11 @@
+
 import getData from "../utils/getData.js";
 import sendResponse from "../utils/sendResponse.js";
 import ParseJsonBody from "../utils/ParseJsonBody.js";
 import addNewSightings from "../utils/addNewSightings.js";
 import sanitizeData from "../utils/sanitize.js";
 import sightLocation from "../events/sightingEvents.js"
+import {stories} from "../data/stories.js"
 
 async function handleGet(res) {
   try {
@@ -42,4 +44,21 @@ async function handlePost(req, res) {
     sendResponse(res, 400, "application/json", JSON.stringify("Error:", err));
   }
 }
-export { handleGet, handlePost };
+
+async function handleNews(req, res) {
+  res.statusCode = 200
+  res.setHeader("Content-Type", "text/event-stream")
+  res.setHeader("Cache-Control", "no-cache")
+  res.setHeader("Connection", "keep-alive")
+
+  setInterval(() => {
+    let randomIndex = Math.floor(Math.random() * stories.length);
+    res.write(
+      `data: ${JSON.stringify({
+        event: 'news-update',
+        story: stories[randomIndex]
+      })}\n\n`
+    );
+  }, 5000);
+}
+export { handleGet, handlePost, handleNews };

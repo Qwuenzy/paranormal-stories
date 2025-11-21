@@ -83,11 +83,7 @@ a {
     text-shadow: 0 0  2rem #023e8a;
     font-family: 'BodyFont';
 }
-.foot {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 .content-text {
     text-transform: uppercase;
     font-size: 1.5rem;
@@ -166,4 +162,63 @@ input,textarea {
 .btn-add:hover {
     background-color: #fff;
     color: #03045e;
+}
+.foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.livehead-text {
+    margin: 4rem 3rem;
+    font-family: 'MyFont';
+    font-size: 5rem;
+    text-shadow: 0 0 5rem #0b2b55;
+}
+.live-head {
+    margin: 2rem auto 0.5rem;
+    font-family: 'MyFont';
+    font-size: 2.5rem;
+    letter-spacing: 0.3rem;
+}
+
+.live-text {
+    background-color: #fff;
+    color: #023e8a;
+    padding: 1rem;
+    margin: 0rem 3rem;
+    font-size: 1.3rem;
+    border-radius: 0.3rem;
+    text-transform: capitalize;
+}
+
+.live-N {
+    position: relative;
+    background-image: url("images/homeimage.jpg");
+    color: #fff;
+    width: 50%;
+    background-size: cover;
+    background-position: center;
+    margin: 2rem auto;
+    border: 0.3rem solid #fff;
+    border-radius: 1rem;
+    text-align: center;
+}
+@media (min-width: 1024px) and (max-width: 1600px){
+     .live-N {
+        width: 35%;
+     }
+}
+.live-N::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #023e8a(0, 0, 0, 0);
+  z-index: 0;
+}
+.live-N * {
+  position: relative;
+  z-index: 3;
 }
